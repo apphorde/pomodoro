@@ -5,17 +5,18 @@
   "type": "module",
   "prettier": "@cloud-cli/prettier-config",
   "scripts": {
-    "ci": "npm i && npm run build",
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "ci": "npm i && npm run build && npm run typecheck",
+    "build": "rm -r dist/* && vite build",
+    "typecheck": "vue-tsc --noEmit --project tsconfig.json"
   },
   "dependencies": {
     "vue": "^3.4.21"
   },
   "devDependencies": {
     "@cloud-cli/prettier-config": "^1.0.0",
+    "@cloud-cli/typescript-config": "^1.0.1",
     "@vitejs/plugin-vue": "^5.0.4",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "vue-tsc": "^2.0.17"
   }
 }
