@@ -56,9 +56,11 @@ function onStart() {
 
   timer = setInterval(onTick, 1000);
   running.value = true;
-}
 
-function onStop() {}
+  if (Notification.permission !== 'granted') {
+    Notification.requestPermission();
+  }
+}
 
 function onReset() {
   timeLeft.value = initialTime;
