@@ -5,7 +5,7 @@
         <h1 class="text-4xl font-bold mb-2">Pomodoro Timer</h1>
         <p class="text-gray-400">Focus on your tasks with this simple timer.</p>
       </div>
-      <div class="bg-gray-800 rounded-xl p-8 space-y-8">
+      <div class="bg-gray-800 rounded-xl p-8 space-y-8 mx-8">
         <div class="flex items-center justify-center">
           <div class="relative w-64 h-64">
             <div class="absolute inset-0 flex items-center justify-center">
@@ -74,7 +74,7 @@ function onTick() {
 }
 
 function timeIsUp() {
-  new Notification('To do list', { body: 'Time is up!', icon: '/assets/icon.svg' });
+  new Notification('Pomodoro', { body: 'Time is up!', icon: '/assets/icon.svg' });
 }
 
 function notify() {
