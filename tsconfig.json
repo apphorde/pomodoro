@@ -1,9 +1,0 @@
-{
-  "extends": "@cloud-cli/typescript-config",
-  "compilerOptions": {
-    "outDir": "./dist",
-    "moduleResolution": "Bundler",
-    "skipLibCheck": true,
-    "lib": ["ESNext", "DOM"]
-  }
-}

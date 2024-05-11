@@ -69,6 +69,23 @@ function onTick() {
 
   if (timeLeft.value <= 0) {
     onStop();
+    notify();
   }
+}
+
+function timeIsUp() {
+  new Notification('To do list', { body: 'Time is up!', icon: '/assets/icon.svg' });
+}
+
+function notify() {
+  if (Notification.permission === 'denied') {
+    return;
+  }
+
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      timeIsUp();
+    }
+  });
 }
 </script>
