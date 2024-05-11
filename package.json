@@ -1,0 +1,21 @@
+{
+  "name": "pomodoro",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "prettier": "@cloud-cli/prettier-config",
+  "scripts": {
+    "ci": "npm i && npm run build",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@cloud-cli/prettier-config": "^1.0.0",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.2.0"
+  }
+}
