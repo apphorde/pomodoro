@@ -47,10 +47,14 @@ const secondsLeft = computed(() => Math.floor(timeLeft.value % 60));
 
 const padLeft = (n: number) => String(n).padStart(2, '0');
 
+function onStop() {
+  clearInterval(timer);
+  running.value = false;
+}
+
 function onStart() {
   if (running.value) {
-    clearInterval(timer);
-    running.value = false;
+    onStop();
     return;
   }
 
