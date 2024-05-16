@@ -61,6 +61,7 @@
 import { computed, ref } from 'vue';
 
 let timer = 0;
+let wakeLock: WakeLockSentinel;
 const running = ref(false);
 const paused = ref(false);
 const initialTime = 25;
@@ -76,17 +77,19 @@ function onStop() {
   clearInterval(timer);
   running.value = false;
   paused.value = false;
+  wakeLock?.release();
 }
 
 function onPause() {
   paused.value = !paused.value;
 }
 
-function onStart() {
+async function onStart() {
   if (running.value) {
     onStop();
     return;
   }
+
   timeLeft.value = getRequestedTime() * 60;
   timer = setInterval(onTick, 1000);
   running.value = true;
@@ -94,6 +97,8 @@ function onStart() {
   if (Notification.permission !== 'granted') {
     Notification.requestPermission();
   }
+
+  wakeLock = await navigator.wakeLock.request('screen');
 }
 
 function onReset() {
