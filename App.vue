@@ -1,63 +1,47 @@
 <template>
   <main class="flex flex-col items-center justify-center h-screen bg-primary overflow-auto p-8">
     <div class="max-w-md w-full space-y-8">
-      <div class="text-center">
+      <div class="text-center text-white">
         <img src="/assets/icon.svg" class="w-40 mx-auto" />
         <h1 class="text-4xl font-bold mb-2">Pomodoro Timer</h1>
         <p class="">Focus on your tasks with this simple timer.</p>
       </div>
-      <div class="px-8 space-y-6 mx-8">
-        <div class="flex items-center justify-center">
-          <div class="relative w-64 h-64">
-            <div class="absolute inset-0 flex items-center justify-center space-x-1 z-10">
-              <span v-if="running" class="text-5xl font-bold"
-                >{{ padLeft(minutesLeft) }}:{{ padLeft(secondsLeft) }}</span
-              >
-              <template v-else>
-                <input
-                  class="text-5xl w-16 rounded-lg font-bold bg-transparent text-right text-white"
-                  type=""
-                  min="1"
-                  max="99"
-                  v-model="requestedTime"
-                />
-                <span class="text-white text-3xl">min</span>
-              </template>
-            </div>
-            <svg class="w-full h-full" viewBox="0 0 100 100">
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                fill="transparent"
-                :stroke="running ? '#d13834' : '#ffffff99'"
-                stroke-width="8"
-              ></circle>
-            </svg>
-          </div>
+      <div class="flex space-y-6 items-center justify-center h-20">
+        <div v-if="running" class="text-5xl font-bold text-white">
+          {{ padLeft(minutesLeft) }}:{{ padLeft(secondsLeft) }}
         </div>
-        <div class="flex items-center justify-stretch space-x-4 w-full">
-          <button
-            @click="onStart()"
-            :class="running ? 'bg-red' : 'bg-green-700'"
-            class="flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
-          >
-            {{ running ? 'Stop' : 'Start' }}
-          </button>
-          <button
-            v-if="running"
-            @click="onPause()"
-            class="flex w-full items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
-          >
-            {{ paused ? 'Continue' : 'Pause' }}
-          </button>
-          <button
-            @click="onReset()"
-            class="flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
-          >
-            Reset
-          </button>
+        <div class="flex items-center justify-center" v-else>
+          <input
+            class="text-5xl font-bold w-16 rounded-lg bg-transparent text-right text-white"
+            v-model="requestedTime"
+          />
+          <span class="text-white text-5xl font-bold">:00</span>
         </div>
+      </div>
+      <div class="w-full rounded-full border border-white" :class="!running && 'opacity-0'">
+        <span :style="'width: ' + progress + '%'" class="h-2 block bg-white opacity-50 rounded-full"></span>
+      </div>
+      <div class="flex items-center justify-stretch space-x-4">
+        <button
+          @click="onStart()"
+          :class="running ? 'bg-red' : 'bg-green-700'"
+          class="flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
+        >
+          {{ running ? 'Stop' : 'Start' }}
+        </button>
+        <button
+          v-if="running"
+          @click="onPause()"
+          class="flex w-full items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
+        >
+          {{ paused ? 'Continue' : 'Pause' }}
+        </button>
+        <button
+          @click="onReset()"
+          class="flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
+        >
+          Reset
+        </button>
       </div>
     </div>
   </main>
@@ -86,6 +70,7 @@ const minutesLeft = computed(() => Math.floor(timeLeft.value / 60));
 const secondsLeft = computed(() => Math.floor(timeLeft.value % 60));
 const getRequestedTime = () => parseInt(requestedTime.value) || initialTime;
 const padLeft = (n: number) => String(n).padStart(2, '0');
+const progress = computed(() => (running.value ? 100 * (timeLeft.value / (Number(requestedTime.value) * 60)) : 0));
 
 function onStop() {
   clearInterval(timer);
