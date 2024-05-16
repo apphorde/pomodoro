@@ -1,5 +1,5 @@
 <template>
-  <main class="flex flex-col items-center justify-center h-screen bg-primary-dark overflow-auto p-8">
+  <main class="flex flex-col items-center justify-center h-screen bg-primary overflow-auto p-8">
     <div class="max-w-md w-full space-y-8">
       <div class="text-center">
         <h1 class="text-4xl font-bold mb-2">Pomodoro Timer</h1>
@@ -62,11 +62,8 @@
   </main>
 </template>
 <style>
-.bg-primary-dark {
-  background-color: #629438;
-}
 .bg-primary {
-  background-color: #88c057;
+  background-color: #629438;
 }
 .bg-red {
   background-color: #d13934;
