@@ -2,10 +2,11 @@
   <main class="flex flex-col items-center justify-center h-screen bg-primary overflow-auto p-8">
     <div class="max-w-md w-full space-y-8">
       <div class="text-center">
+        <img src="/assets/icon.svg" class="w-40 mx-auto" />
         <h1 class="text-4xl font-bold mb-2">Pomodoro Timer</h1>
         <p class="">Focus on your tasks with this simple timer.</p>
       </div>
-      <div class="bg-focus rounded-xl p-8 space-y-8 mx-8 text-whitse">
+      <div class="px-8 space-y-6 mx-8">
         <div class="flex items-center justify-center">
           <div class="relative w-64 h-64">
             <div class="absolute inset-0 flex items-center justify-center space-x-1 z-10">
@@ -23,7 +24,7 @@
                 <span class="text-white text-3xl">min</span>
               </template>
             </div>
-            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+            <svg class="w-full h-full" viewBox="0 0 100 100">
               <circle
                 cx="50"
                 cy="50"
@@ -39,20 +40,20 @@
           <button
             @click="onStart()"
             :class="running ? 'bg-red' : 'bg-green-700'"
-            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
+            class="flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
           >
             {{ running ? 'Stop' : 'Start' }}
           </button>
           <button
             v-if="running"
             @click="onPause()"
-            class="inline-flex w-full items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
+            class="flex w-full items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
           >
-          {{ paused ? 'Continue' : 'Pause' }}
+            {{ paused ? 'Continue' : 'Pause' }}
           </button>
           <button
             @click="onReset()"
-            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
+            class="flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 text-white"
           >
             Reset
           </button>
@@ -83,12 +84,13 @@ const requestedTime = ref(String(initialTime));
 const timeLeft = ref(initialTime * 60);
 const minutesLeft = computed(() => Math.floor(timeLeft.value / 60));
 const secondsLeft = computed(() => Math.floor(timeLeft.value % 60));
-
+const getRequestedTime = () => parseInt(requestedTime.value) || initialTime;
 const padLeft = (n: number) => String(n).padStart(2, '0');
 
 function onStop() {
   clearInterval(timer);
   running.value = false;
+  paused.value = false;
 }
 
 function onPause() {
@@ -100,7 +102,7 @@ function onStart() {
     onStop();
     return;
   }
-  timeLeft.value = (parseInt(requestedTime.value) || initialTime) * 60;
+  timeLeft.value = getRequestedTime() * 60;
   timer = setInterval(onTick, 1000);
   running.value = true;
 
@@ -110,7 +112,7 @@ function onStart() {
 }
 
 function onReset() {
-  timeLeft.value = initialTime * 60;
+  timeLeft.value = getRequestedTime() * 60;
 }
 
 function onTick() {
